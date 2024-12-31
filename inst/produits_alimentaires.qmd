@@ -1,0 +1,185 @@
+---
+format: html
+toc: true
+lang: fr
+embed-resources: true
+# params:
+#   modalites: null
+execute: 
+  eval: true
+  echo: false
+  warning: false
+  error: false
+---
+
+```{r}
+#| label: load helper functions
+
+source(here::here("R", "02_create_options.R"))
+```
+
+```{r}
+#| label: load data from questionnaire
+
+# construire le chemin vers le questionnaire
+chemin_qnr_excel <- fs::dir_ls(
+  path = fs::path(here::here(), "01_entree"),
+  type = "file",
+  regexp = "(\\.xlsx|\\.xls|\\.xlsm)$"
+)
+
+# créer une base des produits à partir du questionnaire Excel de l'EHCVM3
+produits <- chemin_qnr_excel |>
+  readxl::read_excel(
+    sheet = "S7b_Conso_Al",
+    skip = 16
+  ) |>
+  dplyr::rename(
+    produit_code = 1,
+    produit_nom = 2
+  ) |>
+  dplyr::select(produit_code, produit_nom) |>
+  dplyr::mutate(
+    type_produit = dplyr::if_else(
+      condition = is.na(produit_code),
+      true = produit_nom,
+      false = NA_character_
+    )
+  ) |>
+  tidyr::fill(type_produit, .direction = "down") |>
+  dplyr::filter(!is.na(produit_code))
+```
+
+```{r}
+groupes_produits <- c(
+  "CÉRÉALES ET PAINS",
+  "VIANDE",
+  "POISSON ET FRUITS DE MER",
+  "LAIT, FROMAGE ET OEUFS",
+  "HUILES ET GRAISSES",
+  "FRUITS",
+  "LÉGUMES",
+  "LEGUMINEUSES ET TUBERCULES",
+  "SUCRE, MIEL, CHOCOLAT ET CONFISERIE",
+  "EPICES, CONDIMENTS ET AUTRES",
+  "BOISSONS"
+)
+
+produits_codes <- purrr::map(
+  .x = groupes_produits,
+  .f = ~ get_products_for_food_group(
+    product_df = produits,
+    food_group = .x
+  )
+)
+```
+
+## Céréales et pains
+
+```{r}
+#| label: céréales
+creer_modalites_a_copier(
+  produits_df = produits,
+  produits_codes = produits_codes[[1]]
+)
+```
+
+## Viandes
+
+```{r}
+#| label: viandes
+creer_modalites_a_copier(
+  produits_df = produits,
+  produits_codes = produits_codes[[2]]
+)
+```
+
+## Poissons et fruits de mer
+
+```{r}
+#| label: poissons
+creer_modalites_a_copier(
+  produits_df = produits,
+  produits_codes = produits_codes[[3]]
+)
+```
+
+## Lait, fromage, et oeufs
+
+```{r}
+#| label: laitier
+creer_modalites_a_copier(
+  produits_df = produits,
+  produits_codes = produits_codes[[4]]
+)
+```
+
+## Huiles et graisses
+
+```{r}
+#| label: huiles
+creer_modalites_a_copier(
+  produits_df = produits,
+  produits_codes = produits_codes[[5]]
+)
+```
+
+## Fruits
+
+```{r}
+#| label: fruits
+creer_modalites_a_copier(
+  produits_df = produits,
+  produits_codes = produits_codes[[6]]
+)
+```
+
+## Légumes
+
+```{r}
+#| label: légumes
+creer_modalites_a_copier(
+  produits_df = produits,
+  produits_codes = produits_codes[[7]]
+)
+```
+
+## Légumineuses et tubercules
+
+```{r}
+#| label: légumineuses et tubercules
+creer_modalites_a_copier(
+  produits_df = produits,
+  produits_codes = produits_codes[[8]]
+)
+```
+
+## Sucre, miel, chocolat et confiserie
+
+```{r}
+#| label: sucreries
+creer_modalites_a_copier(
+  produits_df = produits,
+  produits_codes = produits_codes[[9]]
+)
+```
+
+## Épices, condiments, et autre
+
+```{r}
+#| label: épices
+creer_modalites_a_copier(
+  produits_df = produits,
+  produits_codes = produits_codes[[10]]
+)
+```
+
+## Boissons
+
+```{r}
+#| label: boissons
+creer_modalites_a_copier(
+  produits_df = produits,
+  produits_codes = produits_codes[[11]]
+)
+```
