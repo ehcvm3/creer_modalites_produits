@@ -1,5 +1,7 @@
 ---
 format: html
+title: Produits alimentaires
+subtitle: Modalités, rosters, et macros
 toc: true
 toc-depth: 4
 lang: fr
