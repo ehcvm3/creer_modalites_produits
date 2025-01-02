@@ -1,0 +1,169 @@
+---
+format: html
+toc: true
+lang: fr
+embed-resources: true
+execute: 
+  eval: true
+  echo: false
+  warning: false
+  error: false
+---
+
+```{r}
+#| label: load helper functions
+
+source(here::here("R", "02_create_options.R"))
+```
+
+```{r}
+#| label: load data from questionnaire
+
+# construire le chemin vers le questionnaire
+chemin_qnr_excel <- fs::dir_ls(
+  path = fs::path(here::here(), "01_entree"),
+  type = "file",
+  regexp = "(\\.xlsx|\\.xls|\\.xlsm)$"
+)
+
+# créer une base des produits à partir du questionnaire Excel de l'EHCVM3
+produits_9a <- chemin_qnr_excel |>
+  readxl::read_excel(
+    sheet = "S9a__Conso_NA",
+    skip = 14,
+    col_names = FALSE
+  ) |>
+  dplyr::rename(
+    produit_code = 1,
+    produit_nom = 2
+  ) |>
+  dplyr::filter(!is.na(produit_code)) |>
+  dplyr::select(produit_code, produit_nom)
+
+produits_9b <- chemin_qnr_excel |>
+  readxl::read_excel(
+    sheet = "S9b__Conso_NA",
+    skip = 11,
+    col_names = FALSE
+  ) |>
+  dplyr::rename(
+    produit_code = 1,
+    produit_nom = 2
+  ) |>
+  dplyr::filter(!is.na(produit_code)) |>
+  dplyr::select(produit_code, produit_nom)
+
+produits_9c <- chemin_qnr_excel |>
+  readxl::read_excel(
+    sheet = "S9c__Conso_NA",
+    skip = 11,
+    col_names = FALSE
+  ) |>
+  dplyr::rename(
+    produit_code = 1,
+    produit_nom = 2
+  ) |>
+  dplyr::filter(!is.na(produit_code)) |>
+  dplyr::select(produit_code, produit_nom)
+
+produits_9d <- chemin_qnr_excel |>
+  readxl::read_excel(
+    sheet = "S9d___Conso_NA",
+    skip = 11,
+    col_names = FALSE
+  ) |>
+  dplyr::rename(
+    produit_code = 1,
+    produit_nom = 2
+  ) |>
+  dplyr::filter(!is.na(produit_code)) |>
+  dplyr::select(produit_code, produit_nom)
+
+produits_9e <- chemin_qnr_excel |>
+  readxl::read_excel(
+    sheet = "S9e__Conso_NA",
+    skip = 11,
+    col_names = FALSE
+  ) |>
+  dplyr::rename(
+    produit_code = 1,
+    produit_nom = 2
+  ) |>
+  dplyr::filter(!is.na(produit_code)) |>
+  dplyr::select(produit_code, produit_nom)
+
+produits_9f <- chemin_qnr_excel |>
+  readxl::read_excel(
+    sheet = "S9f__Conso_NA",
+    skip = 11,
+    col_names = FALSE
+  ) |>
+  dplyr::rename(
+    produit_code = 1,
+    produit_nom = 2
+  ) |>
+  dplyr::filter(!is.na(produit_code)) |>
+  dplyr::select(produit_code, produit_nom)
+```
+
+## 9A : Fêtes et cérémonies au cours des 12 derniers mois
+
+::: {clasname}
+```{r}
+#| label: fêtes et cérémonies
+creer_modalites_a_copier(
+  produits_df = produits_9a,
+  produits_codes = dplyr::pull(produits_9a, produit_code)
+)
+```
+:::
+
+## 9B : 7 derniers jours 
+
+```{r}
+#| label: 7 jours
+creer_modalites_a_copier(
+  produits_df = produits_9b,
+  produits_codes = dplyr::pull(produits_9b, produit_code)
+)
+```
+
+## 9C : 30 derniers jours 
+
+```{r}
+#| label: 30 jours
+creer_modalites_a_copier(
+  produits_df = produits_9c,
+  produits_codes = dplyr::pull(produits_9c, produit_code)
+)
+```
+
+## 9D : 3 derniers mois 
+
+```{r}
+#| label: 3 mois
+creer_modalites_a_copier(
+  produits_df = produits_9d,
+  produits_codes = dplyr::pull(produits_9d, produit_code)
+)
+```
+
+## 9E : 6 derniers mois 
+
+```{r}
+#| label: 6 mois
+creer_modalites_a_copier(
+  produits_df = produits_9e,
+  produits_codes = dplyr::pull(produits_9e, produit_code)
+)
+```
+
+## 9F : 12 derniers mois 
+
+```{r}
+#| label: 12 mois
+creer_modalites_a_copier(
+  produits_df = produits_9f,
+  produits_codes = dplyr::pull(produits_9f, produit_code)
+)
+```
