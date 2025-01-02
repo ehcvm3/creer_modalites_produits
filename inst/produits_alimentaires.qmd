@@ -212,7 +212,7 @@ s07Bq02_viandes.Yes.Contains(@rowcode) ||
 s07Bq02_poissons.Yes.Contains(@rowcode) ||
 s07Bq02_lait.Yes.Contains(@rowcode) ||
 s07Bq02_huiles.Yes.Contains(@rowcode) ||
-s07Bq02_fruits.Yes.Contains(@rowcode) ||
+s07Bq02_fruits.Yes.Contains(@rowcode)
 ```
 
 ### Roster 2 (`conso_alim_2`)
