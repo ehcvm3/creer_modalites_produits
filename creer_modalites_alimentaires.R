@@ -19,6 +19,10 @@ chemin_qnr_excel <- fs::dir_ls(
   regexp = "(\\.xlsx|\\.xls|\\.xlsm)$"
 )
 
+# ------------------------------------------------------------------------------
+# fichier existe
+# ------------------------------------------------------------------------------
+
 if (length(chemin_qnr_excel) == 0) {
 
   cli::cli_abort(
@@ -40,6 +44,31 @@ if (length(chemin_qnr_excel) == 0) {
   )
 
 }
+
+# ------------------------------------------------------------------------------
+# onglets cibles existent
+# ------------------------------------------------------------------------------
+
+onglets_cibles <- c("S7b_Conso_Al")
+onglets <- readxl::excel_sheets(path = chemin_qnr_excel)
+
+if (!onglets_cibles %in% onglets) {
+
+  cli::cli_abort(
+    message = c(
+      "x" = glue::glue(
+        "L'onglet de la consommation alimentaire n'a pas été retrouvé :
+        {onglets_cibles}"
+      ),
+      "i" = paste0(
+        "Onglets retrouvés : ",
+        glue::glue_collapse(onglets, sep = ", ", last = " et ")
+      )
+    )
+  )
+
+}
+
 
 # ==============================================================================
 # générer un document qui affiche ces modalites
