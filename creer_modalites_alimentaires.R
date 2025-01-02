@@ -14,7 +14,7 @@ source(here::here("R", "01_install_requirements.R"))
 
 # construire le chemin vers le questionnaire
 chemin_qnr_excel <- fs::dir_ls(
-  path = fs::path(here::here(), "01_entree"),
+  path = fs::path(here::here(), "01_entree", "01_menage"),
   type = "file",
   regexp = "(\\.xlsx|\\.xls|\\.xlsm)$"
 )
@@ -28,7 +28,7 @@ if (length(chemin_qnr_excel) == 0) {
   cli::cli_abort(
     message = c(
       "x" = "Aucun questionnaire EHCVM3 retrouvé.",
-      "i" = "Le programme attend un questionnaire Excel avec extension `.xlsx` dans le répertoire `01_entree/ehcvm3/`",
+      "i" = "Le programme attend un questionnaire Excel avec extension `.xlsx` dans le répertoire `01_entree/01_menage/`",
       "i" = "Veuillez copier un exemplaire adapté du questionnaire dans ce dossier."
     )
   )
@@ -38,7 +38,7 @@ if (length(chemin_qnr_excel) == 0) {
   cli::cli_abort(
     message = c(
       "x" = "Plusieurs questionnaires EHCVM3 retrouvés.",
-      "i" = "Veuillez supprimer les questionnaires exédentaires dans le répertoire `01_entree/ehcvm3/`",
+      "i" = "Veuillez supprimer les questionnaires exédentaires dans le répertoire `01_entree/01_menage/`",
       chemin_qnr_excel
     )
   )

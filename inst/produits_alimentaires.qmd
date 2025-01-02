@@ -24,7 +24,7 @@ source(here::here("R", "02_create_options.R"))
 
 # construire le chemin vers le questionnaire
 chemin_qnr_excel <- fs::dir_ls(
-  path = fs::path(here::here(), "01_entree"),
+  path = fs::path(here::here(), "01_entree", "01_menage"),
   type = "file",
   regexp = "(\\.xlsx|\\.xls|\\.xlsm)$"
 )

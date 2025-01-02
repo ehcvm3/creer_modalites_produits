@@ -14,7 +14,7 @@ source(here::here("R", "01_install_requirements.R"))
 
 # construire le chemin vers le questionnaire
 chemin_qnr_excel <- fs::dir_ls(
-  path = fs::path(here::here(), "01_entree", "01_menage"),
+  path = fs::path(here::here(), "01_entree", "02_nsu"),
   type = "file",
   regexp = "(\\.xlsx|\\.xls|\\.xlsm)$"
 )
@@ -28,7 +28,7 @@ if (length(chemin_qnr_excel) == 0) {
   cli::cli_abort(
     message = c(
       "x" = "Aucun questionnaire EHCVM3 retrouvé.",
-      "i" = "Le programme attend un questionnaire Excel avec extension `.xlsx` dans le répertoire `01_entree/01_menage/`",
+      "i" = "Le programme attend un questionnaire Excel avec extension `.xlsx` dans le répertoire `01_entree/02_nsu/`",
       "i" = "Veuillez copier un exemplaire adapté du questionnaire dans ce dossier."
     )
   )
@@ -38,7 +38,7 @@ if (length(chemin_qnr_excel) == 0) {
   cli::cli_abort(
     message = c(
       "x" = "Plusieurs questionnaires EHCVM3 retrouvés.",
-      "i" = "Veuillez supprimer les questionnaires exédentaires dans le répertoire `01_entree/01_menage/`",
+      "i" = "Veuillez supprimer les questionnaires exédentaires dans le répertoire `01_entree/02_nsu/`",
       chemin_qnr_excel
     )
   )
@@ -49,45 +49,35 @@ if (length(chemin_qnr_excel) == 0) {
 # onglets cibles existent
 # ------------------------------------------------------------------------------
 
-onglets_cibles <- c(
-  "S9a__Conso_NA",
-  "S9b__Conso_NA",
-  "S9c__Conso_NA",
-  "S9d___Conso_NA",
-  "S9e__Conso_NA",
-  "S9f__Conso_NA"
-)
+onglets_cibles <- c("S1_Relevés")
 onglets <- readxl::excel_sheets(path = chemin_qnr_excel)
 
-if (any(!onglets_cibles %in% onglets)) {
-
-  onglets_retrouves <- onglets_cibles[onglets_cibles %in% onglets]
-  onglets_absents <- onglets_cibles[!onglets_cibles %in% onglets]
+if (!onglets_cibles %in% onglets) {
 
   cli::cli_abort(
     message = c(
-      "x" = "Au moins un onglet attendu n'existe pas dans le questionnaire.",
-      "i" = paste0(
-        "Onglet(s) absent(s) : ",
-        glue::glue_collapse(onglets_absents, sep = ", ", last = "et ")
+      "x" = glue::glue(
+        "L'onglet des relevés de prix et de poids n'a pas été retrouvé :
+        {onglets_cibles}"
       ),
       "i" = paste0(
         "Onglets retrouvés : ",
-        glue::glue_collapse(onglets_retrouves, sep = ", ", last = " et ")
+        glue::glue_collapse(onglets, sep = ", ", last = " et ")
       )
     )
   )
 
 }
 
+
 # ==============================================================================
 # générer un document qui affiche ces modalites
 # ==============================================================================
 
 # construire le chemin du document
-chemin_document <- here::here("02_sortie", "produits_non-alimentaires.html")
+chemin_document <- here::here("02_sortie", "produits_nsu.html")
 
-# purger l'ancien document, s'il existe
+# purger l'ancien document, s'il existe 
 tryCatch(
   error = function(cnd) {
     cat("Le document qui compile les codes de produit n'existe pas encore.")
@@ -97,14 +87,14 @@ tryCatch(
 
 # créer le document
 quarto::quarto_render(
-  input = fs::path(here::here(), "inst", "produits_non-alimentaires.qmd")
+  input = fs::path(here::here(), "inst", "produits_nsu.qmd")
 )
 
 # déplacer le document vers le dossier de sortie
 fs::file_move(
   path = fs::path(
     here::here(), "inst",
-    "produits_non-alimentaires.html"
+    "produits_nsu.html"
   ),
   new_path = chemin_document
 )

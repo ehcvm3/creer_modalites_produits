@@ -1,0 +1,4 @@
+# ne pas suivre le fichier Excel
+*.xlsx
+*.xlsm
+*.xls

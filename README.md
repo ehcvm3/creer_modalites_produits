@@ -2,7 +2,9 @@
 
 Si le questionnaire EHCVM sous format Excel change, il est bon d'avoir des ingrédients pour mettre à jour les applications de collecte.
 
-Ce projet crée des documents qui collecte les ingrédients.
+Ce projet crée des documents qui collecte les ingrédients pour les instruments suivants :
+
+### Ménage
 
 Le script `creer_modalites_alimentaires.R` crée un document qui donnes les éléments à actualiser:
 
@@ -11,6 +13,13 @@ Le script `creer_modalites_alimentaires.R` crée un document qui donnes les él�
 - Macros. Les conditions des macros qui sont utilisées dans les rosters.
 
 Le script `creer_modalites_non-alimentaire.R` crée les modalités pour les produits non-alimentaires pour l'ensemble des sections 9.
+
+### NSU
+
+Le script `creer_modalites_nsu.R` crée les produits à inclure dans l'application CAPI chez :
+
+- Modalités. Pour les questions oui-non qui font l'inventaire des produits disponibles au marché.
+- Rosters. Les éléments fixes des rosters pour un groupe de produits donné.
 
 ## Installation 🔌
 
@@ -75,7 +84,10 @@ RStudio est sollicité pour deux raisons :
 
 ## Configuration ⚙️
 
-Le programme a besoin du questionnaire EHCVM actualisé et adapté au contexte pays dans le répertoire `01_entree/`
+Le programme a besoin de questionnaires EHCVM actualisé et adapté au contexte pays à mettre dans les répertoires suivants :
+
+- Ménage. `01_entree/01_menage/`
+- NSU. `01_entree/02_nsu/`
 
 ## Emploi 👩‍💻
 
@@ -83,7 +95,7 @@ Après avoir installé les pré-requis et mis en places les entrées attendues, 
 
 - Ouvrir le RStudio
 - Ouvrir le répertoire comme un projet (ou bien double-cliquer sur le fichier `creer_tableau_excel.Rproj`)
-- Ouvrir un programme pour creer des modalités et d'autres informations pour actualiser l'application (i.e, `creer_modalites_alimentaires.R`, `creer_modalites_non-alimentaires.R`)
+- Ouvrir un programme pour creer des modalités et d'autres informations pour actualiser l'application (i.e, `creer_modalites_alimentaires.R`, `creer_modalites_non-alimentaires.R`, `creer_modalites_nsu.R`)
 - Cliquer sur le bouton `Source` chez RStudio pour lancer le programme
 - Réagir aux messages d'erreur, au besoin (e.g., questionnaire Excel absent, onglets attendus introuvables, etc.).
 - Récupérer la sortie, un fichier HTML, dans le répertoire `02_sortie/`

@@ -1,0 +1,191 @@
+---
+format: html
+title: Produits pour l'enquête NSU
+subtitle: Modalités et éléments fixes à copier-coller
+toc: true
+lang: fr
+embed-resources: true
+execute: 
+  eval: true
+  echo: false
+  warning: false
+  error: false
+---
+
+```{r}
+#| label: load helper functions
+
+source(here::here("R", "02_create_options.R"))
+```
+
+```{r}
+#| label: load data from questionnaire
+
+# construire le chemin vers le questionnaire
+chemin_qnr_excel <- fs::dir_ls(
+  path = fs::path(here::here(), "01_entree", "02_nsu"),
+  type = "file",
+  regexp = "(\\.xlsx|\\.xls|\\.xlsm)$"
+)
+
+
+produits_nsu <- chemin_qnr_excel |>
+  readxl::read_excel(
+    sheet = "S1_Relevés",
+    skip = 5,
+    col_names = FALSE
+  ) |>
+  dplyr::rename(
+    produit_nom = 1,
+    produit_code = 2,
+  ) |>
+  dplyr::select(produit_code, produit_nom) |>
+  dplyr::mutate(
+    type_produit = dplyr::if_else(
+      condition = is.na(produit_code),
+      true = produit_nom,
+      false = NA_character_
+    )
+  ) |>
+  tidyr::fill(type_produit, .direction = "down") |>
+  dplyr::distinct(produit_code, .keep_all = TRUE) |>
+  dplyr::filter(!is.na(produit_code))
+```
+
+
+```{r}
+# liste des noms des groupes de produits
+groupes_produits <- c(
+  "CÉRÉALES ET PAINS",
+  "VIANDE",
+  "POISSON ET FRUITS DE MER",
+  "LAIT, FROMAGE ET OEUFS",
+  "HUILES ET GRAISSES",
+  "FRUITS",
+  "LÉGUMES",
+  "LEGUMINEUSES ET TUBERCULES",
+  "SUCRE, MIEL, CHOCOLAT ET CONFISERIE",
+  "EPICES, CONDIMENTS ET AUTRES",
+  "BOISSONS"
+)
+
+# créer une liste dont chaque élément représente un groupe de produits
+# et dont le contenu est un vecteur des codes de produits pour ce groupe
+codes_produit_par_groupe <- purrr::map(
+  .x = groupes_produits,
+  .f = ~ get_products_for_food_group(
+    product_df = produits_nsu,
+    food_group = .x
+  )
+)
+```
+
+## Céréales et pains 🍚
+
+```{r}
+#| label: céréales
+creer_modalites_a_copier(
+  produits_df = produits_nsu,
+  produits_codes = codes_produit_par_groupe[[1]]
+)
+```
+
+## Viandes 🥩
+
+```{r}
+#| label: viandes
+creer_modalites_a_copier(
+  produits_df = produits_nsu,
+  produits_codes = codes_produit_par_groupe[[2]]
+)
+```
+
+## Poissons et fruits de mer 🐟
+
+```{r}
+#| label: poissons
+creer_modalites_a_copier(
+  produits_df = produits_nsu,
+  produits_codes = codes_produit_par_groupe[[3]]
+)
+```
+
+## Lait, fromage, et oeufs 🥛🧀🥚
+
+```{r}
+#| label: laitier
+creer_modalites_a_copier(
+  produits_df = produits_nsu,
+  produits_codes = codes_produit_par_groupe[[4]]
+)
+```
+
+## Huiles et graisses 🧈
+
+```{r}
+#| label: huiles
+creer_modalites_a_copier(
+  produits_df = produits_nsu,
+  produits_codes = codes_produit_par_groupe[[5]]
+)
+```
+
+## Fruits 🍉
+
+```{r}
+#| label: fruits
+creer_modalites_a_copier(
+  produits_df = produits_nsu,
+  produits_codes = codes_produit_par_groupe[[6]]
+)
+```
+
+## Légumes 🫑
+
+```{r}
+#| label: légumes
+creer_modalites_a_copier(
+  produits_df = produits_nsu,
+  produits_codes = codes_produit_par_groupe[[7]]
+)
+```
+
+## Légumineuses et tubercules 🍠
+
+```{r}
+#| label: légumineuses et tubercules
+creer_modalites_a_copier(
+  produits_df = produits_nsu,
+  produits_codes = codes_produit_par_groupe[[8]]
+)
+```
+
+## Sucre, miel, chocolat et confiserie 🍫
+
+```{r}
+#| label: sucreries
+creer_modalites_a_copier(
+  produits_df = produits_nsu,
+  produits_codes = codes_produit_par_groupe[[9]]
+)
+```
+
+## Épices, condiments, et autre 🧂
+
+```{r}
+#| label: épices
+creer_modalites_a_copier(
+  produits_df = produits_nsu,
+  produits_codes = codes_produit_par_groupe[[10]]
+)
+```
+
+## Boissons ☕
+
+```{r}
+#| label: boissons
+creer_modalites_a_copier(
+  produits_df = produits_nsu,
+  produits_codes = codes_produit_par_groupe[[11]]
+)
+```
