@@ -3,8 +3,6 @@ format: html
 toc: true
 lang: fr
 embed-resources: true
-# params:
-#   modalites: null
 execute: 
   eval: true
   echo: false
