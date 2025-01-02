@@ -1,7 +1,7 @@
 ---
 format: html
 toc: true
-toc-depth: 3
+toc-depth: 4
 lang: fr
 embed-resources: true
 execute: 
@@ -80,7 +80,7 @@ produits_codes <- setNames(
 
 ## Questions oui-non
 
-### Céréales et pains
+### Céréales et pains 🍚
 
 ```{r}
 #| label: céréales
@@ -90,7 +90,7 @@ creer_modalites_a_copier(
 )
 ```
 
-### Viandes
+### Viandes 🥩
 
 ```{r}
 #| label: viandes
@@ -100,7 +100,7 @@ creer_modalites_a_copier(
 )
 ```
 
-### Poissons et fruits de mer
+### Poissons et fruits de mer 🐟
 
 ```{r}
 #| label: poissons
@@ -110,7 +110,7 @@ creer_modalites_a_copier(
 )
 ```
 
-### Lait, fromage, et oeufs
+### Lait, fromage, et oeufs 🥛🧀🥚
 
 ```{r}
 #| label: laitier
@@ -120,7 +120,7 @@ creer_modalites_a_copier(
 )
 ```
 
-### Huiles et graisses
+### Huiles et graisses 🧈
 
 ```{r}
 #| label: huiles
@@ -130,7 +130,7 @@ creer_modalites_a_copier(
 )
 ```
 
-### Fruits
+### Fruits 🍉
 
 ```{r}
 #| label: fruits
@@ -140,7 +140,7 @@ creer_modalites_a_copier(
 )
 ```
 
-### Légumes
+### Légumes 🫑
 
 ```{r}
 #| label: légumes
@@ -150,7 +150,7 @@ creer_modalites_a_copier(
 )
 ```
 
-### Légumineuses et tubercules
+### Légumineuses et tubercules 🍠
 
 ```{r}
 #| label: légumineuses et tubercules
@@ -160,7 +160,7 @@ creer_modalites_a_copier(
 )
 ```
 
-### Sucre, miel, chocolat et confiserie
+### Sucre, miel, chocolat et confiserie 🍫
 
 ```{r}
 #| label: sucreries
@@ -170,7 +170,7 @@ creer_modalites_a_copier(
 )
 ```
 
-### Épices, condiments, et autre
+### Épices, condiments, et autre 🧂
 
 ```{r}
 #| label: épices
@@ -180,7 +180,7 @@ creer_modalites_a_copier(
 )
 ```
 
-### Boissons
+### Boissons ☕
 
 ```{r}
 #| label: boissons
