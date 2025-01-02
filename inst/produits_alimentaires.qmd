@@ -71,6 +71,11 @@ produits_codes <- purrr::map(
     food_group = .x
   )
 )
+
+produits_codes <- setNames(
+  object = produits_codes,
+  nm = groupes_produits
+)
 ```
 
 ## Questions oui-non
@@ -185,9 +190,11 @@ creer_modalites_a_copier(
 )
 ```
 
-## Roster 1 (`conso_alim_1`)
+## Rosters
 
-### Unités fixes
+### Roster 1 (`conso_alim_1`)
+
+#### Unités fixes
 
 ```{r}
 #| label: items, roster 1
@@ -197,7 +204,7 @@ creer_modalites_a_copier(
 )
 ```
 
-### Condition d'activation
+#### Condition d'activation
 
 ```cpp
 s07Bq02_cereales.Yes.Contains(@rowcode) ||
@@ -208,9 +215,9 @@ s07Bq02_huiles.Yes.Contains(@rowcode) ||
 s07Bq02_fruits.Yes.Contains(@rowcode) ||
 ```
 
-## Roster 2 (`conso_alim_2`)
+### Roster 2 (`conso_alim_2`)
 
-### Unités fixes
+#### Unités fixes
 
 ```{r}
 #| label: items, roster 2
@@ -220,7 +227,7 @@ creer_modalites_a_copier(
 )
 ```
 
-### Condition d'activation
+#### Condition d'activation
 
 ```cpp
 s07Bq02_legumes.Yes.Contains(@rowcode) ||
@@ -233,4 +240,185 @@ s07Bq02_huiles.Yes.Contains(@rowcode) ||
 s07Bq02_fruits.Yes.Contains(@rowcode) ||
 s07Bq02_legumes.Yes.Contains(@rowcode) ||
 s07Bq02_legtub.Yes.Contains(@rowcode)
+```
+
+## Macros
+
+### `groupe_de_produits`
+
+```cpp
+// céréales
+@rowcode.InRange(1, 39) ? 1 :
+// viandes
+@rowcode.InRange(40, 84) ? 2 :
+// poissons
+@rowcode.InRange(85, 118) ? 3 :
+// laitier
+@rowcode.InRange(119, 130) ? 4 :
+// huiles
+@rowcode.InRange(131, 144) ? 5 :
+// fruits
+@rowcode.InRange(145, 172) ? 6 :
+// légumes
+@rowcode.InRange(173, 203) ? 7 :
+// légumineuses et tubercules
+@rowcode.InRange(204, 243) ? 8 :
+// sucreries
+@rowcode.InRange(244, 250) ? 9 :
+// épices
+@rowcode.InRange(251, 275) ? 10 :
+// boissons
+@rowcode.InRange(276, 291) ? 11 :
+0
+```
+
+### `produits_alim_autre`
+
+```cpp
+@rowcode.InList(
+
+  /* céréales */
+  12, // Autres céréales
+  21, // Autres farines de céréales
+  22, // Autres semoules de céréales
+  26, // Autres pâtes alimentaires
+
+  /* viandes */
+  45, // Viande boeuf: autre sans os 
+  46, // Viande boeuf: autre avec os 
+  54, // Viande de porc: autres parties
+  64, // Autres gibiers frais (reptiles, etc.)
+  67, // Autres gibiers fumé/séché (reptiles, etc.)
+  72, // Viande de poulet: autres morceaux
+  74, // Viande d'autres volailles domestiques
+  78, // Autre volaille domestique sur pied
+  84, // Autres viandes n.d.a. 
+
+  /* poissons et fruits de mer */
+  112, // Autres fruits de mer
+  118, // Autre insectes
+
+  /* produits laitiers */
+  129, // Autres produits laitiers
+
+  /* huiles */
+  144, // Autres huiles alimentaires n.d.a. (maïs, tournesol, coco, lait de vache, etc.)
+
+  /* fruits */
+  171, // Autres fruits locaux (liane sauvage, pomme sauvage, noisette, mangue sauvage, etc.)
+  172, //	Autres fruits importés (raisin, fraise, poire, etc.)
+
+  /* légumes */
+  201, // Autres légumes en feuilles
+  202, // Autre légumes frais n.d.a
+
+  /* légumineuses, tubercules */
+  207, // Autres légumes secs n.d.a
+  234, // Autres tubercules n.d.a
+  239, // Bâton de manioc autres (mitumba, etc.)
+
+  /* épices, condiments */
+  265, // Autres vinaigres
+  272, // Autres condiments (persil, céléri, etc.)
+  275, // Autres produits alimentaires (noix de pomme sauvage)
+
+  /* boissons */
+  281  // Autres tisanes et infusions n.d.a. (quinqueliba, citronnelle, etc.)
+)
+```
+
+### `produits_sans_autoproduction`
+
+```cpp
+/* CÉRÉALES ET PAINS */
+
+(
+@rowcode != 3	&& // Riz importé 1
+@rowcode != 4	&& // Riz importé 2
+@rowcode != 5	&& // Riz importé 3
+@rowcode != 23	&& // Macaroni
+@rowcode != 24	&& // Spaghettis
+@rowcode != 25	&& // Vermicelles
+@rowcode != 26	&& // Autres pâtes alimentaires
+@rowcode != 31	// Céréales de petit déjeuner
+)
+
+&&
+
+/* VIANDE */
+
+(
+@rowcode != 83	// Conserves de viande
+)
+
+&&
+
+/* POISSON ET FRUITS DE MER */
+
+(
+@rowcode != 114	// Conserves de poisson 
+)
+
+&&
+
+/* LAIT, FROMAGE ET OEUFS */
+
+(
+@rowcode != 123	&& // Lait concentré sucré
+@rowcode != 124	&& // Lait concentré non-sucré
+@rowcode != 125	&& // Lait en poudre
+@rowcode != 127	&& // Lait pour bébé
+@rowcode != 128	// Farines pour bébé
+)
+
+&&
+
+/* HUILE */
+
+(
+@rowcode != 138	&& // Huile de soja 
+@rowcode != 139 &&	// Huile de coton
+@rowcode != 142 // Huile d'olive
+)
+
+&&
+
+/* FRUITS */
+
+(
+@rowcode != 172 /// autres fruits importés
+)
+
+&&
+
+/* SUCRE, MIEL, CHOCOLAT ET CONFISERIE */
+
+(
+@rowcode != 187	&& // Sucre en poudre 
+@rowcode != 188	// Sucre en morceaux
+)
+
+&&
+
+/* EPICES, CONDIMENTS ET AUTRES */
+
+(
+@rowcode != 244	&& // Cube alimentaire (Maggi, Jumbo, )
+@rowcode != 245	// Arôme (Maggi, Jumbo, etc.)
+)
+
+&&
+
+/* BOISSONS */
+
+(
+@rowcode != 276	&& // Café en poudre soluble
+@rowcode != 278	&& // Thé en sachet
+@rowcode != 280	&& // Chocolat soluble en poudre
+@rowcode != 283	&& // Eau minérale/filtrée en bouteille importée
+@rowcode != 287	&& // Boissons gazeuses (Coca, Fanta, Vimto, Sprite, etc.)
+@rowcode != 288	&& // Boissons énergisantes (cody's, 3X, rinho, doppel, okalamar, etc.)
+@rowcode != 289	&& // Jus en poudre
+@rowcode != 291	// Bières industrielles
+)
 ```
