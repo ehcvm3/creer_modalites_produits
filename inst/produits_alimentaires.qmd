@@ -1,6 +1,7 @@
 ---
 format: html
 toc: true
+toc-depth: 3
 lang: fr
 embed-resources: true
 execute: 
@@ -72,7 +73,9 @@ produits_codes <- purrr::map(
 )
 ```
 
-## Céréales et pains
+## Questions oui-non
+
+### Céréales et pains
 
 ```{r}
 #| label: céréales
@@ -82,7 +85,7 @@ creer_modalites_a_copier(
 )
 ```
 
-## Viandes
+### Viandes
 
 ```{r}
 #| label: viandes
@@ -92,7 +95,7 @@ creer_modalites_a_copier(
 )
 ```
 
-## Poissons et fruits de mer
+### Poissons et fruits de mer
 
 ```{r}
 #| label: poissons
@@ -102,7 +105,7 @@ creer_modalites_a_copier(
 )
 ```
 
-## Lait, fromage, et oeufs
+### Lait, fromage, et oeufs
 
 ```{r}
 #| label: laitier
@@ -112,7 +115,7 @@ creer_modalites_a_copier(
 )
 ```
 
-## Huiles et graisses
+### Huiles et graisses
 
 ```{r}
 #| label: huiles
@@ -122,7 +125,7 @@ creer_modalites_a_copier(
 )
 ```
 
-## Fruits
+### Fruits
 
 ```{r}
 #| label: fruits
@@ -132,7 +135,7 @@ creer_modalites_a_copier(
 )
 ```
 
-## Légumes
+### Légumes
 
 ```{r}
 #| label: légumes
@@ -142,7 +145,7 @@ creer_modalites_a_copier(
 )
 ```
 
-## Légumineuses et tubercules
+### Légumineuses et tubercules
 
 ```{r}
 #| label: légumineuses et tubercules
@@ -152,7 +155,7 @@ creer_modalites_a_copier(
 )
 ```
 
-## Sucre, miel, chocolat et confiserie
+### Sucre, miel, chocolat et confiserie
 
 ```{r}
 #| label: sucreries
@@ -162,7 +165,7 @@ creer_modalites_a_copier(
 )
 ```
 
-## Épices, condiments, et autre
+### Épices, condiments, et autre
 
 ```{r}
 #| label: épices
@@ -172,7 +175,7 @@ creer_modalites_a_copier(
 )
 ```
 
-## Boissons
+### Boissons
 
 ```{r}
 #| label: boissons
@@ -180,4 +183,54 @@ creer_modalites_a_copier(
   produits_df = produits,
   produits_codes = produits_codes[[11]]
 )
+```
+
+## Roster 1 (`conso_alim_1`)
+
+### Unités fixes
+
+```{r}
+#| label: items, roster 1
+creer_modalites_a_copier(
+  produits_df = produits,
+  produits_codes = c(1:172) # du début à la fin de fruits
+)
+```
+
+### Condition d'activation
+
+```cpp
+s07Bq02_cereales.Yes.Contains(@rowcode) ||
+s07Bq02_viandes.Yes.Contains(@rowcode) ||
+s07Bq02_poissons.Yes.Contains(@rowcode) ||
+s07Bq02_lait.Yes.Contains(@rowcode) ||
+s07Bq02_huiles.Yes.Contains(@rowcode) ||
+s07Bq02_fruits.Yes.Contains(@rowcode) ||
+```
+
+## Roster 2 (`conso_alim_2`)
+
+### Unités fixes
+
+```{r}
+#| label: items, roster 2
+creer_modalites_a_copier(
+  produits_df = produits,
+  produits_codes = c(173:291) # des légumes à la fin de la liste
+)
+```
+
+### Condition d'activation
+
+```cpp
+s07Bq02_legumes.Yes.Contains(@rowcode) ||
+s07Bq02_legtub.Yes.Contains(@rowcode) ||
+s07Bq02_cereales.Yes.Contains(@rowcode) ||
+s07Bq02_viandes.Yes.Contains(@rowcode) ||
+s07Bq02_poissons.Yes.Contains(@rowcode) ||
+s07Bq02_lait.Yes.Contains(@rowcode) ||
+s07Bq02_huiles.Yes.Contains(@rowcode) ||
+s07Bq02_fruits.Yes.Contains(@rowcode) ||
+s07Bq02_legumes.Yes.Contains(@rowcode) ||
+s07Bq02_legtub.Yes.Contains(@rowcode)
 ```
