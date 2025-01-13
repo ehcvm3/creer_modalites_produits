@@ -28,18 +28,25 @@ chemin_qnr_excel <- fs::dir_ls(
   regexp = "(\\.xlsx|\\.xls|\\.xlsm)$"
 )
 
-
-produits_nsu <- chemin_qnr_excel |>
+# ingérer le contenu brut du questionnaire Excel
+excel_df <- chemin_qnr_excel |>
   readxl::read_excel(
     sheet = "S1_Relevés",
-    skip = 5,
     col_names = FALSE
   ) |>
   dplyr::rename(
     produit_nom = 1,
     produit_code = 2,
-  ) |>
+  )
+
+# identifier la ligne après laquelle l'on retrouve les données
+header_row <- which(excel_df$produit_nom ==  "Libellé")[1]
+
+produits_nsu <- excel_df |>
+  # ne retenir que les lignes après l'entête
+  dplyr::filter(dplyr::row_number() >= header_row + 1) |>
   dplyr::select(produit_code, produit_nom) |>
+  # créer une colonne qui capte le groupe de produit
   dplyr::mutate(
     type_produit = dplyr::if_else(
       condition = is.na(produit_code),
@@ -47,7 +54,8 @@ produits_nsu <- chemin_qnr_excel |>
       false = NA_character_
     )
   ) |>
-  tidyr::fill(type_produit, .direction = "down") |>
+  # copier vers le bas les noms, les codes, et les groupes de produit
+  tidyr::fill(c(produit_code, produit_nom, type_produit), .direction = "down") |>
   dplyr::distinct(produit_code, .keep_all = TRUE) |>
   dplyr::filter(!is.na(produit_code))
 ```

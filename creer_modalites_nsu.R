@@ -117,6 +117,57 @@ if (!onglets_cibles %in% onglets) {
 
 }
 
+# ------------------------------------------------------------------------------
+# ligne qui démarque le les données identifiable
+# ------------------------------------------------------------------------------
+
+fichier_df <- chemin_qnr_excel |>
+  readxl::read_excel(
+    sheet = "S1_Relevés",
+    col_names = FALSE
+  ) |>
+  dplyr::rename(
+    produit_nom = 1,
+    produit_code = 2,
+  )
+
+header_row <- which(excel_df$produit_nom ==  "Libellé")[1]
+
+if (is.na(header_row) | is.null(header_row)) {
+
+  cli::cli_abort(
+    message = c(
+      "x" = "Impossible de retrouver la dernière ligne avant les données.",
+      "i" = paste0(
+        "Le programme s'attend à retrouver 'Libellé' dans la 1ière colonne. ",
+        "Cette ligne est censée intervenir juste avant les données."
+      )
+    )
+  )
+
+}
+
+# ------------------------------------------------------------------------------
+# groupes de produits présents
+# ------------------------------------------------------------------------------
+
+groupes_df <- fichier_df |>
+	dplyr::filter(dplyr::row_number() >= header_row + 1) |>
+	dplyr::filter(!is.na(produit_nom) & is.na(produit_code))
+
+if (nrow(groupes_df) == 0) {
+
+  cli::cli_abort(
+    message = c(
+      "x" = "Impossible de retrouver les groupes de produit.",
+      "i" = paste0(
+        "Le programme s'attend à ce que les groupes de produit interviennent ",
+        "dans la première colonne, sans code de produit."
+      )
+    )
+  )
+
+}
 
 # ==============================================================================
 # générer un document qui affiche ces modalites
